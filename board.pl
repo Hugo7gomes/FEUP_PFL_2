@@ -1,10 +1,10 @@
 % board vai ser guardado numa lista de listas 
 initial_board(5, [
-[0,2,0,0,0],
 [0,0,0,0,0],
-[0,0,1,0,0],
-[0,0,0,1,0],
-[0,2,0,0,0]
+[0,0,0,0,0],
+[0,0,0,0,0],
+[0,0,0,0,0],
+[0,0,0,0,0]
 ]).
 
 initial_board(7,[
@@ -59,9 +59,17 @@ row_lower(9,'j').
 
 clear_screen :- write('\33\[2J').
 
-print_separator_mid(2):-
+
+board_size(Board, Size):-
+	nth0(0, Board, Row),
+	length(Row, Size),
+	length(Board, Y),
+	Size == Y.
+
+
+print_separator_mid(2) :-
 	write('- |'), nl.
-print_separator_mid(X):-
+print_separator_mid(X) :-
 	write('- + '), 
 	X1 is X-1, 
 	print_separator_mid(X1).
@@ -90,26 +98,26 @@ print_header(X) :-
   	write('---'),
   	print_separator_board(X).
 
-print_separator_board(0):-
+print_separator_board(0) :-
 	write('|'), nl.
 
-print_separator_board(X):-
+print_separator_board(X) :-
 	write('+---'), 
 	X1 is X-1, 
 	print_separator_board(X1).
 
 
-print_columns_numbers(Initial, Initial):-
+print_columns_numbers(Initial, Initial) :-
 	nl.
-print_columns_numbers(Initial, Final):-
+print_columns_numbers(Initial, Final) :-
 	write(' '), write(Initial), write(' |'),
 	Initial1 is Initial + 1,
 	print_columns_numbers(Initial1, Final). 
 
 
-display_board :-
-	initial_board(5, L),
-	print_header(5),
-	print_board(L,0,5). 
+display_board(Board) :-
+	nl, board_size(Board, Size),
+	print_header(Size),
+	print_board(Board,0,Size). 
 
 
