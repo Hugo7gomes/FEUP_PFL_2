@@ -55,7 +55,6 @@ row_lower(5,'f').
 row_lower(6,'g').
 row_lower(7,'h').
 row_lower(8,'i').
-row_lower(9,'j').
 
 clear_screen :- write('\33\[2J').
 
