@@ -1,38 +1,6 @@
-% board vai ser guardado numa lista de listas 
-initial_board(5, [
-[0,0,0,0,0],
-[0,0,0,0,0],
-[0,0,0,0,0],
-[0,0,0,0,0],
-[0,0,0,0,0]
-]).
-
-initial_board(7,[
-[0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0]
-]).
-
-initial_board(9,[
-[0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0]
-]).
-
-
 player(0,32).
-player(1,164).
-player(2,181).
+player(1,164). % player1
+player(-1,181). % player2
 
 row(0,'A').
 row(1,'B').
@@ -45,7 +13,6 @@ row(7,'H').
 row(8,'I').
 row(9,'J').
 
-
 row_lower(0,'a').
 row_lower(1,'b').
 row_lower(2,'c').
@@ -55,6 +22,19 @@ row_lower(5,'f').
 row_lower(6,'g').
 row_lower(7,'h').
 row_lower(8,'i').
+
+create_board(N, Count, Board):-
+	N > Count,
+	length(List, N),
+	maplist(=(0), List),
+	Count1 is Count + 1,
+	assertz(board(List)), % assert list as a new fact for board predicate
+	create_board(N, Count1, Board).
+
+create_board(N, N, Board):-
+	findall(Row, board(Row), Board), % find all rows of the board
+	retractall(board(_)). % retract all facts for board predicate
+
 
 clear_screen :- write('\33\[2J').
 
@@ -66,24 +46,29 @@ board_size(Board, Size):-
 	Size == Y.
 
 
-print_separator_mid(2) :-
-	write('- |'), nl.
+
 print_separator_mid(X) :-
-	write('- + '), 
-	X1 is X-1, 
+	X > 2,
+	write('- + '),
+	X1 is X - 1, 
 	print_separator_mid(X1).
 
-print_board([], 5,_).
+print_separator_mid(2) :-
+	write('- |\n').
+
+
+print_board([], _, _).
 print_board([L|T],N,X) :-
+	X > N,
 	row(N,Letter),
 	write(' '), write(Letter), write(' | '),
-	N1 is N+1,
 	print_line(L), nl,
 	write('---| - + '), print_separator_mid(X),
+	N1 is N + 1,
 	print_board(T, N1, X).
 
 
-print_line([]).
+print_line([]):- !.
 print_line([C|L]):-
 	player(C, Char),
 	put_code(Char),
@@ -97,10 +82,11 @@ print_header(X) :-
   	write('---'),
   	print_separator_board(X).
 
+
 print_separator_board(0) :-
 	write('|'), nl.
-
 print_separator_board(X) :-
+	X >0,
 	write('+---'), 
 	X1 is X-1, 
 	print_separator_board(X1).
