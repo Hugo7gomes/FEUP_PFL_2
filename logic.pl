@@ -55,14 +55,24 @@ check_place(Row, Col, Player1Count, Player2Count, Board):-
 
 
 check_all_places(Col, Row, Player1Count, Player2Count, Board):-
-	RowUp is Row +1,
-	RowDown is Row -1,
+	board_size(Board, Size),
+
+	RowUp is Row - 1,
+	RowDown is Row + 1,
 	ColUp is Col + 1,
 	ColDown is Col -1,
-	check_place(RowUp, Col, Player1Count1, Player2Count1, Board),
-	check_place(RowDown, Col, Player1Count2, Player2Count2, Board),
-	check_place(Row, ColUp, Player1Count3, Player2Count3, Board),
-	check_place(Row, ColDown, Player1Count4, Player2Count4, Board),
+	(RowUp >= 0 -> check_place(RowUp, Col, Player1Count1, Player2Count1, Board);
+	 RowUp < 0 -> Player1Count1 is 0, Player2Count1 is 0),
+
+	((RowDown < Size) -> check_place(RowDown, Col, Player1Count2, Player2Count2, Board);
+	(RowDown == Size) -> Player1Count2 is 0, Player2Count2 is 0),
+
+	(ColUp < Size -> 	check_place(Row, ColUp, Player1Count3, Player2Count3, Board);
+	ColUp == Size ->  Player1Count3 is 0, Player2Count3 is 0),
+
+	(ColDown >= 0 -> check_place(Row, ColDown, Player1Count4, Player2Count4, Board);
+	 ColDown < 0 -> Player1Count4 is 0, Player2Count4 is 0),
+
 	Player1Count is Player1Count1 + Player1Count2 + Player1Count3 + Player1Count4,
 	Player2Count is Player2Count1 + Player2Count2 + Player2Count3 + Player2Count4.
 
@@ -71,9 +81,13 @@ check_all_places(Col, Row, Player1Count, Player2Count, Board):-
 check_move(Col, Row, Board):-
 	nth0(Row, Board, X),
 	nth0(Col, X, Position),
-	Position == 0,
+	Position == 0, 
 	check_all_places(Col, Row, Player1Count, Player2Count, Board),
 	Player1Count == Player2Count.
 
 
+game_over(Board) :-
+	findall([Col, Row], check_move(Col, Row, Board), AvailableMoves),
+	length(AvailableMoves, X),
+	X == 0.
 

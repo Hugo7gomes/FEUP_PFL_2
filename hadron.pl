@@ -1,7 +1,11 @@
 :-consult('board.pl').
 :-consult('play.pl').
 :-consult('logic.pl').
+:-consult('bot.pl').
 :- use_module(library(lists)).
+:- use_module(library(random)).
+:- use_module(library(samsort)).
+
 :- dynamic gameboard/1. 
 
 hadron :-
