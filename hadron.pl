@@ -5,6 +5,11 @@
 :- dynamic gameboard/1. 
 
 hadron :-
-	create_board(5,0,Board),
+	create_board(5,0),
+	gameboard(Board),
+	display_board(Board),
 	change_element(1,2, 1, Board, NewBoard),
-	display_board(NewBoard).
+	retract(gameboard(_)),
+	asserta(gameboard(NewBoard)),
+	gameboard(Board1),
+	display_board(Board1).

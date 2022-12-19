@@ -23,17 +23,6 @@ row_lower(6,'g').
 row_lower(7,'h').
 row_lower(8,'i').
 
-create_board(N, Count, Board):-
-	N > Count,
-	length(List, N),
-	maplist(=(0), List),
-	Count1 is Count + 1,
-	assertz(board(List)), % assert list as a new fact for board predicate
-	create_board(N, Count1, Board).
-
-create_board(N, N, Board):-
-	findall(Row, board(Row), Board), % find all rows of the board
-	retractall(board(_)). % retract all facts for board predicate
 
 
 clear_screen :- write('\33\[2J').
