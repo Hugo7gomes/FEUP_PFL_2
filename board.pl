@@ -1,6 +1,6 @@
-player(0,32).
-player(1,164). % player1
-player(-1,181). % player2
+player_char(0,32).
+player_char(1,164). % player1
+player_char(-1,181). % player2
 
 row(0,'A').
 row(1,'B').
@@ -59,7 +59,7 @@ print_board([L|T],N,X) :-
 
 print_line([]):- !.
 print_line([C|L]):-
-	player(C, Char),
+	player_char(C, Char),
 	put_code(Char),
 	write(' | '),
 	print_line(L).

@@ -23,10 +23,12 @@ compare_first_element(Order, [H1 | _], [H2 | _]) :-
     compare(Order, H1, H2).
 
 
-intelligent_mode(Col, Row, PlayerTurn, Board, List):-
-	Col is 1, Row is 1,
+intelligent_mode(Col, Row, PlayerTurn, Board):-
 	findall([Columns, Rows], check_move(Columns, Rows, Board), AvailableMoves),
 	number_moves_opponent(AvailableMoves, Board, PlayerTurn, Solution),
-	samsort(Solution, List).
+	samsort(Solution, OrderedSolution),
+	nth0(0, OrderedSolution, Result),
+	nth0(1, Result, Col),
+	nth0(2, Result, Row).
 
 

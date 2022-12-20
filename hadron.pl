@@ -2,6 +2,8 @@
 :-consult('play.pl').
 :-consult('logic.pl').
 :-consult('bot.pl').
+:-consult('menus.pl').
+:-consult('inputs.pl').
 :- use_module(library(lists)).
 :- use_module(library(random)).
 :- use_module(library(samsort)).
@@ -9,6 +11,10 @@
 :- dynamic gameboard/1. 
 
 hadron :-
+	clear_screen,
+	hadron_logo,
+	menu.
+/*
 	create_board(5,0),
 	gameboard(Board),
 	display_board(Board),
@@ -17,3 +23,4 @@ hadron :-
 	asserta(gameboard(NewBoard)),
 	gameboard(Board1),
 	display_board(Board1).
+*/

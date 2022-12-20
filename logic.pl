@@ -1,5 +1,5 @@
-is_human(NextPlayer) :-
-	player(NextPlayer, 'Human').
+is_human(Player) :-
+	player(Player, 'Human').
 
 create_board(N, Count):-
 	N > Count,
@@ -90,4 +90,7 @@ game_over(Board) :-
 	findall([Col, Row], check_move(Col, Row, Board), AvailableMoves),
 	length(AvailableMoves, X),
 	X == 0.
+
+
+
 
