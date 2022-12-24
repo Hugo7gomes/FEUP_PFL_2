@@ -2,6 +2,9 @@ option_size(1, 5).
 option_size(2, 7).
 option_size(3, 9).
 
+player_turn(-1,2).
+player_turn(1,1).
+
 hadron_logo :-
 write('##    ##    ###    #####   #########  ######## ##     ##\n'),
 write('##    ##   ## ##   #    #  ##      ## #      # ###    ##\n'),
@@ -63,6 +66,21 @@ banner(String) :-
     format( '*~t~a~t*~57|~n', [String]),
     format( '~`*t~57|~n', []).
 
+
+win_message(Player):-
+    player_turn(Player, PlayerNumber),
+    format( '~n~`*t~57|~n', []),
+    format( '*~t Player ~d Won!~t*~57|~n', [PlayerNumber]),
+    format( '~`*t~57|~n', []),
+    sleep(2).
+
+
+computer_move(Row, Col, Player):-
+    player_turn(Player, PlayerNumber),
+    row(Row, Letter),
+    format( '*~t Computer ~d Put a Piece in Tale ~dx~a!~t*~57|~n', [PlayerNumber, Col, Letter]).
+
+
 menu_option(0):-
     banner('Thank You For Playing'),
     hadron_logo.
@@ -72,14 +90,20 @@ menu_option(1):-
     asserta(player(-1, 'Human')),
     menu_choose_size(Size),
     clear_screen,
-    pp_start(Size).
+    pp_start(Size), clear_screen.
 
 menu_option(2):-
     banner('Player vs Computer'),
     menu_choose_size(Size),
     pc_menu_1(Size),
-    clear, menu.
+    clear_screen, menu.
 
+
+menu_option(3):-
+    banner('Computer vs Computer'),
+    menu_choose_size(Size),
+    cc_menu_1(Size),
+    clear_screen, menu.
 
 
 pp_start(0):-
@@ -88,7 +112,8 @@ pp_start(0):-
 pp_start(Option):-
     option_size(Option, Size),
     create_board(Size,0),
-    start_game,
+    asserta(turn(-1)),
+    game_loop(Size),
     menu.
 
 
@@ -124,9 +149,8 @@ pc_menu_2(Size, Difficulty):-
     menu_option_format(0, 'EXIT'),
     menu_empty_format,
     menu_end_format,
-
     read_number(2, PlayerTurn),
-    pc_start(Size, Difficulty).
+    pc_start(Size, Difficulty, PlayerTurn).
 
 
 
@@ -135,13 +159,67 @@ pc_start(Option, Difficulty, 1):-
     create_board(Size,0),
     asserta(player(1, 'Human')),
     asserta(player(-1, 'Bot')),
-    start_game()
+    asserta(turn(-1)),
+    asserta(difficulty(-1,Difficulty)),
+    game_loop(Size).
 
 pc_start(Option, Difficulty, 2):-
     option_size(Option, Size),
     create_board(Size,0),
     asserta(player(1, 'Bot')),
     asserta(player(-1, 'Human')),
+    asserta(turn(-1)),
+    asserta(difficulty(1, Difficulty)),
+    game_loop(Size).
+
+cc_menu_1(0).
+
+cc_menu_1(Size):-
+    banner('Computer vs Computer'),
+    menu_header_format('Choose a Difficulty For Computer 1'),
+    menu_empty_format,
+    menu_second_header_format('Option', 'Details'),
+    menu_empty_format,
+    menu_option_format(1, 'Easy (Random)'),
+    menu_option_format(2, 'Normal (Greedy)'),
+    menu_empty_format,
+    menu_option_format(0, 'EXIT'),
+    menu_empty_format,
+    menu_end_format,
+
+    read_number(2,Difficulty),
+    cc_menu_2(Size, Difficulty).
+
+cc_menu_2(_,0).
+
+cc_menu_2(Size, Difficulty1):-
+    banner('Computer vs Computer'),
+    menu_header_format('Choose a Difficulty For Computer 2'),
+    menu_empty_format,
+    menu_second_header_format('Option', 'Details'),
+    menu_empty_format,
+    menu_option_format(1, 'Easy (Random)'),
+    menu_option_format(2, 'Normal (Greedy)'),
+    menu_empty_format,
+    menu_option_format(0, 'EXIT'),
+    menu_empty_format,
+    menu_end_format,
+
+    read_number(2,Difficulty),
+    cc_start(Size, Difficulty1, Difficulty).
+
+cc_start(_,_,0).
+
+cc_start(Option, Difficulty1, Difficulty2):-
+    option_size(Option, Size),
+    create_board(Size, 0),
+    asserta(difficulty(1, Difficulty1)),
+    asserta(difficulty(-1, Difficulty2)),
+    asserta(turn(-1)),
+    asserta(player(1, 'Bot')),
+    asserta(player(-1, 'Bot')),
+    game_loop(Size).
+
 
 
 

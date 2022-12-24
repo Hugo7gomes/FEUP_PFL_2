@@ -7,20 +7,11 @@
 :- use_module(library(lists)).
 :- use_module(library(random)).
 :- use_module(library(samsort)).
+:- use_module(library(system)).
 
 :- dynamic gameboard/1. 
 
-hadron :-
+play :-
 	clear_screen,
 	hadron_logo,
 	menu.
-/*
-	create_board(5,0),
-	gameboard(Board),
-	display_board(Board),
-	change_element(1,2, 1, Board, NewBoard),
-	retract(gameboard(_)),
-	asserta(gameboard(NewBoard)),
-	gameboard(Board1),
-	display_board(Board1).
-*/

@@ -1,6 +1,3 @@
-is_human(Player) :-
-	player(Player, 'Human').
-
 create_board(N, Count):-
 	N > Count,
 	length(List, N),
@@ -86,7 +83,8 @@ check_move(Col, Row, Board):-
 	Player1Count == Player2Count.
 
 
-game_over(Board) :-
+game_over :-
+	gameboard(Board),
 	findall([Col, Row], check_move(Col, Row, Board), AvailableMoves),
 	length(AvailableMoves, X),
 	X == 0.

@@ -25,7 +25,7 @@ row_lower(8,'i').
 
 
 
-clear_screen :- write('\33\[2J').
+clear_screen :- write('\33\[2J'), !.
 
 
 board_size(Board, Size):-
@@ -46,18 +46,18 @@ print_separator_mid(2) :-
 	write('- |\n').
 
 
-print_board([], _, _).
+print_board(_, X, X).
 print_board([L|T],N,X) :-
 	X > N,
 	row(N,Letter),
-	write(' '), write(Letter), write(' | '),
+	write(' '), write(Letter),write(' | '),
 	print_line(L), nl,
 	write('---| - + '), print_separator_mid(X),
 	N1 is N + 1,
 	print_board(T, N1, X).
 
 
-print_line([]):- !.
+print_line([]).
 print_line([C|L]):-
 	player_char(C, Char),
 	put_code(Char),
@@ -89,9 +89,10 @@ print_columns_numbers(Initial, Final) :-
 	print_columns_numbers(Initial1, Final). 
 
 
-display_board(Board) :-
-	nl, board_size(Board, Size),
-	print_header(Size),
+display_board :-
+	gameboard(Board), !,
+	nl, board_size(Board, Size), !,
+	print_header(Size), !,
 	print_board(Board,0,Size). 
 
 

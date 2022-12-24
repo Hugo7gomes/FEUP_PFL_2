@@ -20,41 +20,66 @@ letter_to_number('g',6).
 letter_to_number('h',7).
 letter_to_number('i',8).
 
+letter_to_number('A',0).
+letter_to_number('B',1).
+letter_to_number('C',2).
+letter_to_number('D',3).
+letter_to_number('E',4).
+letter_to_number('F',5).
+letter_to_number('G',6).
+letter_to_number('H',7).
+letter_to_number('I',8).
+
 
 between(S,Upper) :- S >= 0, S< Upper.
 
 read_input(Size, Column, Row) :-
-	check_column(Size,Column),
-	check_row(Size, Row).
+	read_column(Size, ColumnCode),
+	check_column(Size,ColumnCode, Column),
+	read_row(Size, RowCode),
+	check_row(Size, RowCode, Row).
+
+
+read_column(Size, Column):-
+	format( ' | Column 0-~d\n', Size - 1),
+	get_code(Column).
 
 
 
-check_column(Size, Column) :-
-	repeat,
-		format( ' | Column 0-~d\n', Size - 1),
-		get_code(X),
+check_column(Size, ColumnCode, Column) :-
 		peek_char(Enter),
 		Enter == '\n',
-		ascii_code(X, Column),
+		ascii_code(ColumnCode, Column),
 		skip_line,
-		(between(Column,Size) -> format( ': Column read : ~d\n', Column);
-		write('~ Invalid column | Enter a column again:\n')),
-		between(Column,Size), !.
+		between(Column,Size),
+		format( ': Column read : ~d\n', Column).
+
+check_column(Size, _, Column):-
+		write('~ Invalid column | Enter a column again:\n'), 
+		read_column(Size, ColumnCode),
+		check_column(Size, ColumnCode, Column).
 
 
-check_row(Size, Row) :-
-	repeat,
-		S1 is Size -1,
-		letter_to_number(Letter, S1),
-		format( ' | Row a-~a\n', Letter),
-		get_char(Y),
-		peek_char(Enter),
-		Enter == '\n',
-		letter_to_number(Y, Row),
-		skip_line,
-		(between(Row,Size) -> format( ': Row read : ~a\n', Y);
-		write('~ Invalid column | Enter a column again:\n')),
-		between(Row,Size), !.
+read_row(Size, RowCode):-
+	S1 is Size -1,
+	letter_to_number(Letter, S1), !,
+	format( ' | Row a-~a\n', Letter),
+	get_char(RowCode).
+
+
+
+check_row(Size, RowCode, Row) :-
+	peek_char(Enter),
+	Enter == '\n',
+	letter_to_number(RowCode, Row),
+	skip_line,
+	between(Row,Size), format( ': Row read : ~a\n', RowCode).
+
+check_row(Size,_, Row):-
+	write('~ Invalid row | Enter a row again:\n'), 
+	read_row(Size, RowCode),
+	check_row(Size, RowCode, Row).
+
 
 
 
