@@ -1,3 +1,4 @@
+% Include's of the necessary files
 :-consult('board.pl').
 :-consult('play.pl').
 :-consult('logic.pl').
@@ -11,6 +12,8 @@
 
 :- dynamic gameboard/1. 
 
+% play/0
+% Start predicate
 play :-
 	clear_screen,
 	hadron_logo,

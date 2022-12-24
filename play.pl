@@ -1,10 +1,14 @@
-game_loop(Size) :-
+% game_loop/0
+% predicate responsible for the main loop game
+game_loop :-
 	clear_screen,
 	repeat,
 		change_turn,
-		display_board,
-		next_move(Size),
-		game_over, !,
+		gameboard(GameState),
+		display_game(GameState),
+		next_move(NewGameState),
+		game_over(NewGameState), !,
+	display_game(NewGameState),
 	turn(Winner),
 	win_message(Winner),
 	retract(gameboard(_)),
@@ -13,31 +17,33 @@ game_loop(Size) :-
 	retract(difficulty(_,_)).
 
 
-
-next_move(Size) :-
+% next_move(-NewGameState)
+% predicate that is responsible for who plays next and changing the gamestate in the database
+next_move(NewGameState) :-
 	turn(NextPlayer),
-	gameboard(Board),
+	gameboard(GameState),
 	player(NextPlayer, Type),
-	(Type == 'Human' -> human_turn(Board, NewBoard, NextPlayer, Size);
-	 Type == 'Bot' -> computer_turn(Board, NewBoard, NextPlayer)), !,
+	move(GameState, NextPlayer, Type, NewGameState), !,
 	retract(gameboard(_)), 
-	asserta(gameboard(NewBoard)).
+	asserta(gameboard(NewGameState)).
 
-
-human_turn(Board, NewBoard, NextPlayer, Size) :-
+% move(+GameState, +NextPlayer, +Type, -NewGameState)
+% predicate that makes a move according to the type of player that the NextPlayer is and returns the NewGameState
+move(GameState, NextPlayer, 'Human', NewGameState) :-
+	board_size(GameState, Size),
 	read_input(Size, Column, Row),
-	check_move(Column, Row, Board), 
-	change_element(Row, Column, NextPlayer, Board, NewBoard).
+	check_move(Column, Row, GameState), 
+	change_element(Row, Column, NextPlayer, GameState, NewGameState).
 
-
-computer_turn(Board, NewBoard, NextPlayer) :-
+move(GameState, NextPlayer, 'Bot', NewGameState) :-
 	difficulty(NextPlayer, Difficulty),
-	(Difficulty == 1 -> easy_mode(Board, Col, Row);
-	 Difficulty == 2 -> intelligent_mode(Col, Row, NextPlayer, Board)), 
-	change_element(Row, Col, NextPlayer, Board, NewBoard),
+	choose_move(GameState, NextPlayer,Difficulty, Col, Row),
+	change_element(Row, Col, NextPlayer, GameState, NewGameState),
 	computer_move(Row, Col, NextPlayer),
 	sleep(2).
 
+% change_turn/0
+% predicate that changes the next player who is playing
 change_turn :-
 	turn(Player),
 	retract(turn(_)), !,
