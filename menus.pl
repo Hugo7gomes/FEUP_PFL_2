@@ -44,6 +44,11 @@ menu_end_format :-
   format( '~`*t~57|~n', []).
 
 
+% menu_text(+Text)
+% predicate that prints text inside of a menu
+menu_text(Text):-
+    format( '*~t~a~t*~57|~n', [Text]).
+
 
 % menu/0
 % Main menu with all the options available
@@ -133,7 +138,48 @@ menu_option(3):-
 
 % Game rules 
 menu_option(4):-
-    write('Escrever regras'),
+    clear_screen,
+    menu_header_format('INSTRUCTIONS'),
+    menu_empty_format,
+    format( '*~t~s~t~30|~t~c~t~23+~t*~57|~n', ["Player 1", 79]),
+    format( '*~t~s~t~30|~t~c~t~23+~t*~57|~n', ["Player 2", 88]),
+    menu_empty_format,
+    menu_empty_format,
+    menu_text('-- INTRODUCTION --'),
+    menu_empty_format,
+    menu_text('Hadron is a two player game played on a 5x5'),
+    menu_text('(or 7x7...) square board,initially empty.'),
+    menu_text('The two players, O and X, take turns adding their '),
+    menu_text('own checkers to the board,'),
+    menu_text('one checker per turn, starting with player 1. '),
+    menu_text('If you have a placement available, you must make one.'),
+    menu_text('Passing is not allowed.'),
+    menu_text('Draws cannot occur in Hadron.'),
+    menu_empty_format,
+    menu_empty_format,
+    menu_text('-- PLACEMENT RULES --'),
+    menu_empty_format,
+    menu_text('You can place a checker in isolation,'),
+    menu_text('not adjacent to anything.'),
+    menu_text('Or you can place a checker to form one'),
+    menu_text('(horizontal or vertical) adjacency with a friendly'),
+    menu_text('checker and one adjacency with an enemy checker.'),
+    menu_text('Or you can form two adjacencies with friendly'),
+    menu_text('checkers and two adjacencies with enemy checkers'),
+    menu_empty_format,
+    menu_empty_format,
+    menu_text('-- ENDING CONDITIONS --'),
+    menu_empty_format,
+    menu_text('The last player to make a placement wins.'),
+    menu_text('If you do not have a placement available on'),
+    menu_text('your turn, you lose'),
+    menu_empty_format,
+    menu_text('-- AUTHOR --'),
+    menu_text('Game invented by: '),
+    menu_text('Mark Steere'),
+    menu_empty_format,
+    menu_end_format,
+
     menu.
 
 % pp_start(+Option)
