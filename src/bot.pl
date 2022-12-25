@@ -2,8 +2,8 @@
 % Bot predicate that calculates all the possible moves and according to Difficulty 
 % makes a greedy move or a random move
 % Difficulty 1 means random move
-choose_move(GameState,_, 1, Col, Row):-
-	findall([Columns, Rows], check_move(Columns, Rows, GameState), AvailableMoves),
+choose_move(GameState,_, 'Easy', Col, Row):-
+	valid_moves(GameState, AvailableMoves),
 	length(AvailableMoves, X),
 	Size is X -1,
 	random(0,Size, MoveIndex),
@@ -11,14 +11,19 @@ choose_move(GameState,_, 1, Col, Row):-
 	nth0(0, ChosenMove, Col),
 	nth0(1, ChosenMove, Row).
 % Difficulty 2 means greedy move
-choose_move(GameState, PlayerTurn, 2, Col, Row):-
-	findall([Columns, Rows], check_move(Columns, Rows, GameState), AvailableMoves),
+choose_move(GameState, PlayerTurn, 'Greedy', Col, Row):-
+	valid_moves(GameState, AvailableMoves),
 	number_moves_opponent(AvailableMoves, GameState, PlayerTurn, Solution),
 	samsort(Solution, OrderedSolution),
 	nth0(0, OrderedSolution, Result),
 	nth0(1, Result, Col),
 	nth0(2, Result, Row).
 
+
+% valid_moves(+GameState, +Player, -ListOfMoves)
+% predicate that returns a list with all the possible moves
+valid_moves(GameState, ListOfMoves) :-
+	findall([Columns, Rows], check_move(Columns, Rows, GameState), ListOfMoves).
 
 % number_moves_opponent(+AvailableMoves, +GameState, +PlayerTurn, -Solution)
 % Bot predicate used in the greedy move

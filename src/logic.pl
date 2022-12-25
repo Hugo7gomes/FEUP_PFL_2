@@ -94,7 +94,7 @@ check_move(Col, Row, Board):-
 % game_over(+GameState)
 % predicate that checks if the game is over
 game_over(GameState) :-
-	findall([Col, Row], check_move(Col, Row, GameState), AvailableMoves),
+	valid_moves(GameState, AvailableMoves),
 	length(AvailableMoves, X),
 	X == 0.
 

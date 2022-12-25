@@ -3,6 +3,10 @@ option_size(1, 5).
 option_size(2, 7).
 option_size(3, 9).
 
+% difficulty according to the option chosen
+option_difficulty(1, 'Easy').
+option_difficulty(2, 'Greedy').
+
 % number of the player according to the player turn
 player_turn(-1,2).
 player_turn(1,1).
@@ -53,6 +57,7 @@ menu_text(Text):-
 % menu/0
 % Main menu with all the options available
 menu :-
+    hadron_logo,
     menu_header_format('MAIN MENU'),
     menu_empty_format,
     menu_second_header_format('Option', 'Details'),
@@ -254,7 +259,8 @@ pc_start(Option, Difficulty, 1):-
     asserta(player(1, 'Human')),
     asserta(player(-1, 'Bot')),
     asserta(turn(-1)),
-    asserta(difficulty(-1,Difficulty)),
+    option_difficulty(Difficulty, Choice1),
+    asserta(difficulty(-1,Choice1)),
     game_loop.
 
 pc_start(Option, Difficulty, 2):-
@@ -263,7 +269,8 @@ pc_start(Option, Difficulty, 2):-
     asserta(player(1, 'Bot')),
     asserta(player(-1, 'Human')),
     asserta(turn(-1)),
-    asserta(difficulty(1, Difficulty)),
+    option_difficulty(Difficulty, Choice1),
+    asserta(difficulty(1, Choice1)),
     game_loop.
 
 % cc_menu_1(+Size)
@@ -320,8 +327,10 @@ cc_start(_,_,0).
 cc_start(Option, Difficulty1, Difficulty2):-
     option_size(Option, Size),
     initial_state(Size, 0),
-    asserta(difficulty(1, Difficulty1)),
-    asserta(difficulty(-1, Difficulty2)),
+    option_difficulty(Difficulty1, Choice1),
+    option_difficulty(Difficulty2, Choice2),
+    asserta(difficulty(1, Choice1)),
+    asserta(difficulty(-1, Choice2)),
     asserta(turn(-1)),
     asserta(player(1, 'Bot')),
     asserta(player(-1, 'Bot')),

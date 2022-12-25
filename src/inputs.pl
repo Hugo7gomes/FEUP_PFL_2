@@ -39,8 +39,8 @@ between(S,Upper) :- S >= 0, S< Upper.
 read_input(Size, Column, Row) :-
 	read_column(Size, ColumnCode),
 	check_column(Size,ColumnCode, Column),
-	read_row(Size, RowCode),
-	check_row(Size, RowCode, Row).
+	read_row(Size, RowCode), !,
+	check_row(Size, RowCode, Row), !.
 
 % read_column(+Size, -Column)
 % predicate that reads the input for a Column

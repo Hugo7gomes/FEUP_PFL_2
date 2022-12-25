@@ -16,5 +16,4 @@
 % Start predicate
 play :-
 	clear_screen,
-	hadron_logo,
 	menu.
