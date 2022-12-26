@@ -151,7 +151,6 @@ O predicado `valid_moves(+GameState, -ListOfMoves)` usa o predicado `check_move(
 ### Final do Jogo
 
 Visto que o Hadron não permite empates, o predicado para determinar se o jogo acabou é bastante simples. Para tal, basta invocar o predicado `game_over/1` que chama o predicado `valid_moves/2`. Desta forma, basta verificar o tamanho da lista devolvida com todas as jogadas possíveis. Se o tamanho da lista for 0, significa que o jogo acabou e que não há mais nenhuma jogada disponível para nenhum dos jogadores, sendo o último jogador a colocar uma peça o vencedor. Caso o tamanho da lista não seja 0, significa que ainda há jogadas disponíveis por isso o loop do jogo continua.
-A verificação da vitória é feita no predicado `check_win(+PlayerS, +GameState, +K, -Result)`. 
 ```prolog
 % game_over(+GameState)
 % predicate that checks if the game is over
