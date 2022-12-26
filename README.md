@@ -62,7 +62,7 @@ O player tem dois estados possíveis, ambos strings: `Human` e `Bot`.
 Estas strings são associadas ao player 1 ou player 2 consoante a decisão do jogador através do predicado `player/2`.
 ```prolog
 player(1, 'Human').
-player_piece(-1, 'Bot').
+player(-1, 'Bot').
 ```
 Na representação gráfica do tabuleiro, as peças do `Player 1` são `O` e as peças do `Player 2` são `X`. Esta associação é feita a partir do predicado `player_char/2`, que associa um valor de uma peça do tabuleiro a um código ASCII, usado com `put_code` para realizar a representação gráfica no terminal:
 ```prolog
