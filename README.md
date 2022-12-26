@@ -146,7 +146,7 @@ Depois de se terem verificado as condições previamente apresentadas, é invoca
 
 Uma jogada é constituida por 2 componentes: uma coluna e uma linha. A posição no tabuleiro é composta por um valor correspondente a uma coluna (Inteiro) e um valor correspondente a uma linha (Caráter). 
 
-O predicado `valid_moves(+GameState, -ListOfMoves)` usa o predicado `check_move(+Col, +Row, +Board)` para verificar, posição a posição, começando na posição (0,0) do tabuleiro (canto superior esquerdo), até á posição (`Size-1`, `Size-1`) do tabuleiro (Canto inferior direito), sendo `Size` o número de linhas e colunas do tabuleiro, se aquela casa respeita as condições para se colocar lá uma peça. Além disso, optou-se por não passar ao predicado `valid_moves` o próximo jopgador, visto que as próximas jogadas válidas são independentes do turno do jogador.
+O predicado `valid_moves(+GameState, -ListOfMoves)` usa o predicado `check_move(+Col, +Row, +Board)` para verificar, posição a posição, começando na posição (0,0) do tabuleiro (canto superior esquerdo), até á posição (`Size-1`, `Size-1`) do tabuleiro (Canto inferior direito), sendo `Size` o número de linhas e colunas do tabuleiro, se aquela casa respeita as condições para se colocar lá uma peça. Além disso, optou-se por não passar ao predicado `valid_moves` o próximo jogador, visto que as próximas jogadas válidas são independentes do turno do jogador.
 
 ### Final do Jogo
 
