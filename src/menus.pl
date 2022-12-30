@@ -117,7 +117,9 @@ computer_move(Row, Col, Player):-
 % Exit Main Menu
 menu_option(0):-
     banner('Thank You For Playing'),
-    hadron_logo.
+    hadron_logo,
+    abort.
+
 
 % Player vs Player, needs to choose Board Size
 menu_option(1):-
