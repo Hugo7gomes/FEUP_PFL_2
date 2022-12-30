@@ -161,10 +161,8 @@ game_over(GameState) :-
 ```
 
 ### Avaliação do Tabuleiro
----------------------
-POR FAZERRRRRRRRR
-----------------
 
+No que toca ao nosso jogo, consideramos que não fazia sentido implementar esta função, visto que não há nenhum sistema de pontos e não é possível determinar quem está a ganhar a meio do jogo. O hadron acaba quando não há mais casas para colocar peças no tabuleiro, sendo o último jogador a colocar uma peça o vencedor, o que faz com que seja impossível determinar o estado do jogo até à última jogada.
 
 ### Jogada do Computador
 
