@@ -62,7 +62,7 @@ O player tem dois estados possíveis, ambos strings: `Human` e `Bot`.
 Estas strings são associadas ao player 1 ou player 2 consoante a decisão do jogador através do predicado `player/2`.
 ```prolog
 player(1, 'Human').
-player_piece(-1, 'Bot').
+player(-1, 'Bot').
 ```
 Na representação gráfica do tabuleiro, as peças do `Player 1` são `O` e as peças do `Player 2` são `X`. Esta associação é feita a partir do predicado `player_char/2`, que associa um valor de uma peça do tabuleiro a um código ASCII, usado com `put_code` para realizar a representação gráfica no terminal:
 ```prolog
@@ -146,12 +146,11 @@ Depois de se terem verificado as condições previamente apresentadas, é invoca
 
 Uma jogada é constituida por 2 componentes: uma coluna e uma linha. A posição no tabuleiro é composta por um valor correspondente a uma coluna (Inteiro) e um valor correspondente a uma linha (Caráter). 
 
-O predicado `valid_moves(+GameState, -ListOfMoves)` usa o predicado `check_move(+Col, +Row, +Board)` para verificar, posição a posição, começando na posição (0,0) do tabuleiro (canto superior esquerdo), até á posição (`Size-1`, `Size-1`) do tabuleiro (Canto inferior direito), sendo `Size` o número de linhas e colunas do tabuleiro, se aquela casa respeita as condições para se colocar lá uma peça. Além disso, optou-se por não passar ao predicado `valid_moves` o próximo jopgador, visto que as próximas jogadas válidas são independentes do turno do jogador.
+O predicado `valid_moves(+GameState, -ListOfMoves)` usa o predicado `check_move(+Col, +Row, +Board)` para verificar, posição a posição, começando na posição (0,0) do tabuleiro (canto superior esquerdo), até á posição (`Size-1`, `Size-1`) do tabuleiro (Canto inferior direito), sendo `Size` o número de linhas e colunas do tabuleiro, se aquela casa respeita as condições para se colocar lá uma peça. Além disso, optou-se por não passar ao predicado `valid_moves` o próximo jogador, visto que as próximas jogadas válidas são independentes do turno do jogador.
 
 ### Final do Jogo
 
 Visto que o Hadron não permite empates, o predicado para determinar se o jogo acabou é bastante simples. Para tal, basta invocar o predicado `game_over/1` que chama o predicado `valid_moves/2`. Desta forma, basta verificar o tamanho da lista devolvida com todas as jogadas possíveis. Se o tamanho da lista for 0, significa que o jogo acabou e que não há mais nenhuma jogada disponível para nenhum dos jogadores, sendo o último jogador a colocar uma peça o vencedor. Caso o tamanho da lista não seja 0, significa que ainda há jogadas disponíveis por isso o loop do jogo continua.
-A verificação da vitória é feita no predicado `check_win(+PlayerS, +GameState, +K, -Result)`. 
 ```prolog
 % game_over(+GameState)
 % predicate that checks if the game is over
@@ -181,7 +180,7 @@ Se a dificuldade for `Normal (Greedy)`, após obter a lista dos movimentos poss�
 A lista resultante está ordenada pelo `Size` de forma crescente, sendo assim preciso efetuar um `samsort(Solution, OrderedSolution)` para que a Lista fique ordenada por ordem crescente de `Size`. Assim, apenas é necessário retirar o elemento no Index 0 que corresponde à solução ótima e atualizar o tabuleiro.
 
 ## Conclusões
-Uma das dificuldades apresentadas no inicio do trabalho consistiu na forma como seria implementado a jogada greedy por parte do computador. Visto que nao há casas mais importantes que outras e que não há pontos associados a cada jogada, foi complicado perceber como implementar um critério que fizesse sentido para distinguir os tipos de jogada. Isto poderia ter sido melhorado se todos os jogos apresentados, embora diferentes, apresentassem todos a mesma filosofia. Além desta, a outra principal dificuldade consistiu em como voltar a pedir os inputs ao utilizador no caso em que estes excediam os limites do tabuleiro, pois, devido ao backtracking de prolog, estes entravam em recursão infinita.
+Uma das dificuldades apresentadas no inicio do trabalho consistiu na forma como seria implementado a jogada greedy por parte do computador. Visto que não há casas mais importantes que outras e que não há pontos associados a cada jogada, foi complicado perceber como implementar um critério que fizesse sentido para distinguir os tipos de jogada. Isto poderia ter sido melhorado se todos os jogos apresentados, embora diferentes, apresentassem todos a mesma filosofia. Além desta, a outra principal dificuldade consistiu em como voltar a pedir os inputs ao utilizador no caso em que estes excediam os limites do tabuleiro, pois, devido ao backtracking de prolog, estes entravam em recursão infinita.
 Por fim, uma possível melhoria seria os alunos terem acesso aos critérios de avaliação para melhor perceber quais são as partes mais importantes do trabalho e, consequentemente, dedicarem mais esforço e tempo às mesmas.
 
 
